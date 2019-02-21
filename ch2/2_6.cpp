@@ -1,39 +1,50 @@
 #include <stdio.h>
 
+#define MAX_INPUT	10
+
 int main()
 {
-    int n = 0, kase = 0;
+    int n[MAX_INPUT] = {0}, j = 0, kase = 0;
+    int x[MAX_INPUT][MAX_INPUT] = {0};
 
-    while(scanf("%d", &n) == 1 && n)
+    while(scanf("%d", &n[j]) == 1 && n[j])
     {
-        int s = 0, x = 0, min = 0, max = 0;
+        for (int i = 0; i < n[j]; i++)
+ 	{
+	    scanf("%d", &x[j][i]);
+	}
 
-        for (int i = 0; i < n; i++)
-        {
-            scanf("%d", &x);
+	j++;	// next input 
+    }
 
-            s += x;		// sum
-            
-            if (i == 0)
-            {
- 	        min = x;	// initial value
-		max = x;	// initial value
+    for (int jj = 0; jj < j; jj++)
+    {
+	int s = 0, min = 0, max = 0;
+
+	for (int i = 0; i < n[jj]; i++)
+	{
+	    int tmp = x[jj][i];
+	    s += tmp;
+
+	    if (i == 0)
+	    {
+		min = tmp;
+		max = tmp;
 	    }
 	    else
 	    {
- 	        min = (x < min) ? x : min;	// update min
-		max = (x > max) ? x : max;	// update max
+		min = (tmp < min) ? tmp : min;
+		max = (tmp > max) ? tmp : max;
 	    }
-        }
+	}
 
 	if (kase)
 	{
 	    printf("\n");
 	}
 
-
-	printf("Case %d: %d %d %.3f\n", ++kase, min, max, (double)s / n);
+	printf("Case %d: %d %d %.3f", ++kase, min, max, (double)s/n[jj]);
     }
 
-    return 0;
+    printf("\n");
 }
