@@ -35,7 +35,7 @@ int main(void)
 
 #ifdef LOCAL
     freopen("input.txt", "r", stdin);
-    //freopen("output.txt", "w", stdout);
+    freopen("output.txt", "w", stdout);
 #endif
 
 	int i = 0, j = 0, k = 0;
@@ -44,7 +44,9 @@ int main(void)
 	{
         bool bFlag = true;
 		i = 0;
-
+        
+        memset(&puzzles, 0, sizeof(puzzles));
+        
 		while(i < PUZZLE_SCALE)
 		{
 			scanf("%[^\n]", buffer);	// stop on '\n'
@@ -65,13 +67,13 @@ int main(void)
 				puzzles.blankPosition.x = i;
 				puzzles.blankPosition.y = ret - buffer;
 			}
-			else if (strlen(buffer) == PUZZLE_SCALE - 1)
-			{
-				puzzles.blankPosition.x = i;
-				puzzles.blankPosition.y = PUZZLE_SCALE - 1;	// if there are only 4 characters in a line, then the 5 character is space by default
+			// else if (strlen(buffer) == PUZZLE_SCALE - 1)
+			// {
+				// puzzles.blankPosition.x = i;
+				// puzzles.blankPosition.y = PUZZLE_SCALE - 1;	// if there are only 4 characters in a line, then the 5 character is space by default
 
-				buffer[PUZZLE_SCALE - 1] = ' ';
-			}
+				// buffer[PUZZLE_SCALE - 1] = ' ';
+			// }
 
 			memcpy(&puzzles.puzzle[i++][0], buffer, PUZZLE_SCALE);
 		}
@@ -102,9 +104,7 @@ int main(void)
 				case 'B': 	newX += 1;		break;
 				case 'L':	newY -= 1;		break;
 				case 'R':	newY += 1;		break;
-				case '\n':
-				case ' ':
-				case '\t':					break;
+				case '\n':					break;
 				default:	bRet = false;	break;
 			}
 
