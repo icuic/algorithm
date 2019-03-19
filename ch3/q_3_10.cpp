@@ -13,6 +13,7 @@ typedef struct
 }stRectangle;
 
 stRectangle rectangle[INPUT_NUM];
+stRectangle tmpRect[INPUT_NUM/2];
 
 bool reOrder(stRectangle arr[INPUT_NUM])
 {
@@ -27,8 +28,9 @@ bool reOrder(stRectangle arr[INPUT_NUM])
         }        
     }
     
-    int limit = 3;
-    bool bFlag[INPUT_NUM] = {0};
+    int k = 0;
+    int limit = INPUT_NUM/2;
+    bool bFlag[INPUT_NUM] = {0};    
     
     for (int i = 0; i < limit; i++)
     {
@@ -45,6 +47,11 @@ bool reOrder(stRectangle arr[INPUT_NUM])
                 {
                     bFlag[j] = 1; 
                     limit++;   
+                    
+                    tmpRect[k].width = arr[i].width;
+                    tmpRect[k].high = arr[i].high;
+                    k++;
+                    
                     break;
                 }                
             }     
@@ -64,6 +71,42 @@ bool reOrder(stRectangle arr[INPUT_NUM])
             return false;        
     }
     
+    if (k == INPUT_NUM/2)
+    {
+        for (int x = 0; x < INPUT_NUM/2-1; x++)
+        {
+            for (int y = x+1; y < INPUT_NUM/2; y++)
+            {
+                if (tmpRect[y].width < tmpRect[x].width ||
+                    (tmpRect[y].width == tmpRect[x].width) && tmpRect[y].high < tmpRect[x].high)
+                {
+                    stRectangle RECT;
+                    // memcpy(&RECT, &tmpRect[x], sizeof(rectangle));
+                    // memcpy(&tmpRect[x], &tmpRect[y], sizeof(rectangle));
+                    // memcpy(&tmpRect[y], &RECT, sizeof(rectangle));
+                    
+                    RECT.width = tmpRect[x].width;
+                    RECT.high = tmpRect[x].high;
+                    
+                    tmpRect[x].width = tmpRect[y].width;
+                    tmpRect[x].high = tmpRect[y].high;
+                    
+                    tmpRect[y].width = RECT.width;
+                    tmpRect[y].high = RECT.high;
+                }
+            }            
+        }
+        
+        if (tmpRect[0].width != tmpRect[1].width ||
+            tmpRect[1].high != tmpRect[2].high ||
+            tmpRect[0].high != tmpRect[2].width)
+            return false;        
+    }
+    else
+    {
+        return false;
+    }
+    
     return true;
 }
 
@@ -78,6 +121,7 @@ int main()
     while(1)
     {
         memset(rectangle, 0, sizeof(rectangle));
+        memset(tmpRect, 0, sizeof(tmpRect));
         
         for (int i = 0; i < INPUT_NUM; i++)
         {
